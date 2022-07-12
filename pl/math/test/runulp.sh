@@ -71,6 +71,20 @@ t erfcf  0x1p-26    0x1p5  40000
 t erfcf -0x1p-26   -0x1p3  40000
 t erfcf  0          inf    40000
 
+L=2.0
+t atan2 -10.0       10.0  50000
+t atan2  -1.0        1.0  40000
+t atan2   0.0        1.0  40000
+t atan2   1.0      100.0  40000
+t atan2   1e6       1e32  40000
+
+L=3.0
+t atan2f -10.0       10.0  50000
+t atan2f  -1.0        1.0  40000
+t atan2f   0.0        1.0  40000
+t atan2f   1.0      100.0  40000
+t atan2f   1e6       1e32  40000
+
 done
 
 # vector functions
@@ -112,11 +126,68 @@ range_log10f='
  0    0xffff0000    10000
  0x1p-4    0x1p4    500000
 '
+
+range_erf='
+ 0      0xffff0000 10000
+ 0x1p-127  0x1p-26 40000
+-0x1p-127 -0x1p-26 40000
+ 0x1p-26   0x1p3   40000
+-0x1p-26  -0x1p3   40000
+ 0         inf     40000
+'
+
+range_erff='
+ 0      0xffff0000 10000
+ 0x1p-127  0x1p-26 40000
+-0x1p-127 -0x1p-26 40000
+ 0x1p-26   0x1p3   40000
+-0x1p-26  -0x1p3   40000
+ 0         inf     40000
+'
+
+range_atan2='
+ -10.0       10.0  50000
+  -1.0        1.0  40000
+   0.0        1.0  40000
+   1.0      100.0  40000
+   1e6       1e32  40000
+'
+
+range_atan='
+ -10.0       10.0  50000
+  -1.0        1.0  40000
+   0.0        1.0  40000
+   1.0      100.0  40000
+   1e6       1e32  40000
+'
+
+range_atan2f='
+ -10.0       10.0  50000
+  -1.0        1.0  40000
+   0.0        1.0  40000
+   1.0      100.0  40000
+   1e6       1e32  40000
+'
+
+range_atanf='
+ -10.0       10.0  50000
+  -1.0        1.0  40000
+   0.0        1.0  40000
+   1.0      100.0  40000
+   1e6       1e32  40000
+'
+
 # error limits
 L_erfc=3.7
 L_erfcf=1.0
 L_log10=1.16
 L_log10f=2.81
+L_erf=1.76
+L_erff=1.5
+L_atan2=2.9
+L_atan=3.0
+L_atan2f=3.0
+L_atanf=3.0
 
 while read G F R
 do
@@ -134,6 +205,19 @@ $range
 EOF
 done << EOF
 # group symbol run
+
+atan   __s_atan        $runs
+atan   __v_atan        $runv
+atan   __vn_atan       $runvn
+atan   _ZGVnN2v_atan   $runvn
+atan2 __s_atan2        $runs
+atan2 __v_atan2        $runv
+atan2 __vn_atan2       $runvn
+atan2 _ZGVnN2vv_atan2  $runvn
+erf   __s_erf          $runs
+erf   __v_erf          $runv
+erf   __vn_erf         $runvn
+erf   _ZGVnN2v_erf     $runvn
 erfc   __s_erfc        $runs
 erfc   __v_erfc        $runv
 erfc   __vn_erfc       $runvn
@@ -143,6 +227,18 @@ log10  __v_log10       $runv
 log10  __vn_log10      $runvn
 log10  _ZGVnN2v_log10  $runvn
 
+atanf  __s_atanf       $runs
+atanf  __v_atanf       $runv
+atanf  __vn_atanf      $runvn
+atanf  _ZGVnN4v_atanf  $runvn
+atan2f __s_atan2f       $runs
+atan2f __v_atan2f       $runv
+atan2f __vn_atan2f      $runvn
+atan2f _ZGVnN4vv_atan2f $runvn
+erff   __s_erff        $runs
+erff   __v_erff        $runv
+erff   __vn_erff       $runvn
+erff   _ZGVnN4v_erff   $runvn
 erfcf  __s_erfcf       $runs
 erfcf  __v_erfcf       $runv
 erfcf  __vn_erfcf      $runvn

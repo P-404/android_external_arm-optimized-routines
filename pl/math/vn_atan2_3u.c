@@ -1,5 +1,5 @@
 /*
- * AdvSIMD vector PCS variant of __v_erfcf.
+ * AdvSIMD vector PCS variant of __v_atan2.
  *
  * Copyright (c) 2019-2022, Arm Limited.
  * SPDX-License-Identifier: MIT OR Apache-2.0 WITH LLVM-exception
@@ -7,6 +7,6 @@
 #include "include/mathlib.h"
 #ifdef __vpcs
 #define VPCS 1
-#define VPCS_ALIAS strong_alias (__vn_erfcf, _ZGVnN4v_erfcf)
-#include "v_erfcf_1u.c"
+#define VPCS_ALIAS strong_alias (__vn_atan2, _ZGVnN2vv_atan2)
+#include "v_atan2_3u.c"
 #endif

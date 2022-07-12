@@ -336,7 +336,7 @@ extern const struct logf_data
 /* Data for low accuracy log10 (with 1/ln(10) included in coefficients).  */
 #define LOG10_TABLE_BITS 7
 #define LOG10_POLY_ORDER 6
-#define LOG10_POLY1_ORDER 10
+#define LOG10_POLY1_ORDER 12
 extern const struct log10_data
 {
   double ln2hi;
@@ -393,4 +393,30 @@ extern const struct erfcf_poly_data
 
 #define V_EXP_TAIL_TABLE_BITS 8
 extern const uint64_t __v_exp_tail_data[1 << V_EXP_TAIL_TABLE_BITS] HIDDEN;
+
+#define V_ERF_NINTS 49
+#define V_ERF_NCOEFFS 10
+extern const struct v_erf_data
+{
+  double shifts[V_ERF_NINTS];
+  double coeffs[V_ERF_NCOEFFS][V_ERF_NINTS];
+} __v_erf_data HIDDEN;
+
+#define V_ERFF_NCOEFFS 7
+extern const struct v_erff_data
+{
+  float coeffs[V_ERFF_NCOEFFS][2];
+} __v_erff_data HIDDEN;
+
+#define ATAN_POLY_NCOEFFS 20
+extern const struct atan_poly_data
+{
+  double poly[ATAN_POLY_NCOEFFS];
+} __atan_poly_data HIDDEN;
+
+#define ATANF_POLY_NCOEFFS 8
+extern const struct atanf_poly_data
+{
+  float poly[ATANF_POLY_NCOEFFS];
+} __atanf_poly_data HIDDEN;
 #endif
