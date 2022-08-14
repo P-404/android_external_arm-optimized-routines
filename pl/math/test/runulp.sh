@@ -15,6 +15,9 @@ rmodes='n'
 flags="${ULPFLAGS:--q}"
 emu="$@"
 
+# Enable SVE testing
+WANT_SVE_MATH=${WANT_SVE_MATH:-0}
+
 FAIL=0
 PASS=0
 
@@ -85,6 +88,41 @@ t atan2f   0.0        1.0  40000
 t atan2f   1.0      100.0  40000
 t atan2f   1e6       1e32  40000
 
+L=3.0
+t asinhf        0  0x1p-12  5000
+t asinhf  0x1p-12      1.0  50000
+t asinhf      1.0   0x1p11  50000
+t asinhf   0x1p11  0x1p127  20000
+
+L=2.0
+t asinh -0x1p-26 0x1p-26   50000
+t asinh  0x1p-26     1.0   40000
+t asinh -0x1p-26    -1.0   10000
+t asinh      1.0   100.0   40000
+t asinh     -1.0  -100.0   10000
+t asinh    100.0     inf   50000
+t asinh   -100.0    -inf   10000
+
+L=2.0
+t log1p    -10.0     10.0  10000
+t log1p      0.0  0x1p-23  50000
+t log1p  0x1p-23    0.001  50000
+t log1p    0.001      1.0  50000
+t log1p      0.0 -0x1p-23  50000
+t log1p -0x1p-23   -0.001  50000
+t log1p   -0.001     -1.0  50000
+t log1p     -1.0      inf   5000
+
+L=2.0
+t log1pf    -10.0     10.0  10000
+t log1pf      0.0  0x1p-23  50000
+t log1pf  0x1p-23    0.001  50000
+t log1pf    0.001      1.0  50000
+t log1pf      0.0 -0x1p-23  50000
+t log1pf -0x1p-23   -0.001  50000
+t log1pf   -0.001     -1.0  50000
+t log1pf     -1.0      inf   5000
+
 done
 
 # vector functions
@@ -97,6 +135,11 @@ runv=
 check __v_log10f 1 && runv=1
 runvn=
 check __vn_log10f 1 && runvn=1
+runsv=
+if [ $WANT_SVE_MATH -eq 1 ]; then
+check __sv_cosf 0 && runsv=1
+check __sv_cos  0 && runsv=1
+fi
 
 range_erfc='
    0       0xffff0000   10000
@@ -177,6 +220,38 @@ range_atanf='
    1e6       1e32  40000
 '
 
+range_log1pf='
+    -10.0     10.0  10000
+      0.0  0x1p-23  30000
+  0x1p-23    0.001  50000
+    0.001      1.0  50000
+      0.0 -0x1p-23  30000
+ -0x1p-23   -0.001  30000
+   -0.001     -1.0  50000
+     -1.0      inf   1000
+'
+
+range_asinhf='
+        0  0x1p-12  40000
+  0x1p-12      1.0  40000
+      1.0   0x1p11  40000
+   0x1p11      inf  40000
+        0 -0x1p-12  20000
+ -0x1p-12     -1.0  20000
+     -1.0  -0x1p11  20000
+  -0x1p11     -inf  20000
+'
+
+range_sve_cosf='
+ 0    0xffff0000    10000
+ 0x1p-4    0x1p4    500000
+'
+
+range_sve_cos='
+ 0    0xffff0000    10000
+ 0x1p-4    0x1p4    500000
+'
+
 # error limits
 L_erfc=3.7
 L_erfcf=1.0
@@ -188,6 +263,11 @@ L_atan2=2.9
 L_atan=3.0
 L_atan2f=3.0
 L_atanf=3.0
+L_log1pf=2.0
+L_asinhf=2.2
+
+L_sve_cosf=1.6
+L_sve_cos=2.0
 
 while read G F R
 do
@@ -247,6 +327,21 @@ log10f __s_log10f      $runs
 log10f __v_log10f      $runv
 log10f __vn_log10f     $runvn
 log10f _ZGVnN4v_log10f $runvn
+log1pf __s_log1pf      $runs
+log1pf __v_log1pf      $runv
+log1pf __vn_log1pf     $runvn
+log1pf _ZGVnN4v_log1pf $runvn
+asinhf __s_asinhf      $runs
+asinhf __v_asinhf      $runv
+asinhf __vn_asinhf     $runvn
+asinhf _ZGVnN4v_asinhf $runvn
+
+if [ $WANT_SVE_MATH -eq 1 ]; then
+sve_cosf __sv_cosf     $runsv
+sve_cosf _ZGVsMxv_cosf $runsv
+sve_cos  __sv_cos      $runsv
+sve_cos  _ZGVsMxv_cos  $runsv
+fi
 EOF
 
 [ 0 -eq $FAIL ] || {
