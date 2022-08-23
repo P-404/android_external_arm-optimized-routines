@@ -466,4 +466,34 @@ extern const struct log1pf_data
 {
   float coeffs[LOG1PF_NCOEFFS];
 } __log1pf_data HIDDEN;
+
+#define V_LOG2F_TABLE_BITS 4
+#define V_LOG2F_POLY_ORDER 4
+extern const struct v_log2f_data
+{
+  struct
+  {
+    /* Pad with dummy for quad-aligned memory access.  */
+    float invc_hi, invc_lo, logc, dummy;
+  } tab[1 << V_LOG2F_TABLE_BITS];
+  float poly[V_LOG2F_POLY_ORDER];
+} __v_log2f_data HIDDEN;
+
+#define V_LOG2_TABLE_BITS 7
+#define V_LOG2_POLY_ORDER 7
+extern const struct v_log2_data
+{
+  double poly[V_LOG2_POLY_ORDER - 1];
+  struct
+  {
+    double invc, log2c;
+  } tab[1 << V_LOG2_TABLE_BITS];
+} __v_log2_data HIDDEN;
+
+#define V_SINF_NCOEFFS 4
+extern const struct sv_sinf_data
+{
+  float coeffs[V_SINF_NCOEFFS];
+} __sv_sinf_data HIDDEN;
+
 #endif

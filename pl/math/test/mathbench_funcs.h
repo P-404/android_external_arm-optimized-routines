@@ -13,6 +13,8 @@ F (erfcf, -4.0, 10.0)
 F (erff, -4.0, 4.0)
 F (log10f, 0.01, 11.1)
 F (log1pf, -0.9, 10.0)
+F (log2f, 0.01, 11.1)
+F (sinf, -3.1, 3.1)
 
 D (asinh, -10.0, 10.0)
 D (atan, -10.0, 10.0)
@@ -22,6 +24,8 @@ D (erf, -6,6)
 D (erfc, -6.0, 28.0)
 D (log10, 0.01, 11.1)
 D (log1p, -0.9, 10.0)
+D (log2, 0.01, 11.1)
+D (sin, -3.1, 3.1)
 
 #if WANT_VMATH
 F (__s_asinhf, -10.0, 10.0)
@@ -36,6 +40,8 @@ D (__s_erfc, -6.0, 28.0)
 F (__s_log10f, 0.01, 11.1)
 D (__s_log10, 0.01, 11.1)
 F (__s_log1pf, -0.9, 10.0)
+F (__s_log2f, 0.01, 11.1)
+D (__s_log2, 0.01, 11.1)
 #if __aarch64__
 VF (__v_asinhf, -10.0, 10.0)
 VF (__v_atanf, -10.0, 10.0)
@@ -49,6 +55,8 @@ VD (__v_erfc, -6.0, 28.0)
 VD (__v_log10, 0.01, 11.1)
 VF (__v_log10f, 0.01, 11.1)
 VF (__v_log1pf, -0.9, 10.0)
+VF (__v_log2f, 0.01, 11.1)
+VD (__v_log2, 0.01, 11.1)
 #ifdef __vpcs
 VNF (__vn_asinhf, -10.0, 10.0)
 VNF (_ZGVnN4v_asinhf, -10.0, 10.0)
@@ -85,14 +93,34 @@ VND (_ZGVnN2v_log10, 0.01, 11.1)
 
 VNF (__vn_log1pf, -0.9, 10.0)
 VNF (_ZGVnN4v_log1pf, -0.9, 10.0)
+
+VNF (__vn_log2f, 0.01, 11.1)
+VNF (_ZGVnN4v_log2f, 0.01, 11.1)
+
+VND (__vn_log2, 0.01, 11.1)
+VND (_ZGVnN2v_log2, 0.01, 11.1)
 #endif
 #endif
 #if WANT_SVE_MATH
+SVF (__sv_atanf_x, -3.1, 3.1)
+SVF (_ZGVsMxv_atanf, -3.1, 3.1)
+SVD (__sv_atan_x, -3.1, 3.1)
+SVD (_ZGVsMxv_atan, -3.1, 3.1)
+
+{"__sv_atan2f_x", 'f', 'n', -10.0, 10.0, {.svf = __sv_atan2f_wrap}},
+{"_ZGVsMxvv_atan2f", 'f', 'n', -10.0, 10.0, {.svf = _Z_sv_atan2f_wrap}},
+{"__sv_atan2", 'd', 'n', -10.0, 10.0, {.svd = __sv_atan2_wrap}},
+{"_ZGVsM2vv_atan2", 'd', 'n', -10.0, 10.0, {.svd = _Z_sv_atan2_wrap}},
+
 SVF (__sv_cosf_x, -3.1, 3.1)
 SVF (_ZGVsMxv_cosf, -3.1, 3.1)
+SVF (__sv_sinf_x, -3.1, 3.1)
+SVF (_ZGVsMxv_sinf, -3.1, 3.1)
 
 SVD (__sv_cos_x, -3.1, 3.1)
 SVD (_ZGVsMxv_cos, -3.1, 3.1)
+SVD (__sv_sin_x, -3.1, 3.1)
+SVD (_ZGVsMxv_sin, -3.1, 3.1)
 #endif
 #endif
   // clang-format on
