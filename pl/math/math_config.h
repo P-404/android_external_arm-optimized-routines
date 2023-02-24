@@ -394,10 +394,20 @@ extern const struct v_erfc_data
 extern const struct erfcf_poly_data
 {
   double poly[4][ERFCF_POLY_NCOEFFS];
+  double poly_T[ERFCF_POLY_NCOEFFS][4];
 } __erfcf_poly_data HIDDEN;
 
 #define V_EXP_TAIL_TABLE_BITS 8
 extern const uint64_t __v_exp_tail_data[1 << V_EXP_TAIL_TABLE_BITS] HIDDEN;
+
+#define V_EXP2_TABLE_BITS 7
+#define V_EXP2_POLY_ORDER 5
+extern const struct v_exp2_data
+{
+  double shift;
+  double poly[EXP2_POLY_ORDER];
+  uint64_t sbits[1 << V_EXP2_TABLE_BITS];
+} __v_exp2_data HIDDEN;
 
 #define V_ERF_NINTS 49
 #define V_ERF_NCOEFFS 10
@@ -519,6 +529,31 @@ extern const struct v_log10_data
 #define V_LOG10F_POLY_ORDER 9
 extern const float __v_log10f_poly[V_LOG10F_POLY_ORDER - 1] HIDDEN;
 
+/* Some data for SVE pow's internal exp and log.  */
+#define SV_POW_EXP_TABLE_BITS 8
+#define SV_POW_EXP_POLY_ORDER 4
+extern const struct sv_pow_exp_data
+{
+  double invln2N;
+  double shift;
+  double negln2hiN;
+  double negln2loN;
+  double poly[4]; /* Last four coefficients.  */
+  uint64_t sbits[1 << SV_POW_EXP_TABLE_BITS];
+} __sv_pow_exp_data HIDDEN;
+
+#define SV_POW_LOG_TABLE_BITS 7
+#define SV_POW_LOG_POLY_ORDER 8
+extern const struct sv_pow_log_data
+{
+  double ln2hi;
+  double ln2lo;
+  double poly[SV_POW_LOG_POLY_ORDER - 1]; /* First coefficient is 1.  */
+  double invc[1 << SV_POW_LOG_TABLE_BITS];
+  double logc[1 << SV_POW_LOG_TABLE_BITS];
+  double logctail[1 << SV_POW_LOG_TABLE_BITS];
+} __sv_pow_log_data HIDDEN;
+
 #define SV_LOGF_POLY_ORDER 8
 extern const float __sv_logf_poly[SV_LOGF_POLY_ORDER - 1] HIDDEN;
 
@@ -536,6 +571,12 @@ extern const struct sv_log_data
 #endif
 #define SV_EXPF_POLY_ORDER 6
 extern const float __sv_expf_poly[SV_EXPF_POLY_ORDER - 1] HIDDEN;
+
+#ifndef SV_EXP2F_USE_FEXPA
+#define SV_EXP2F_USE_FEXPA 0
+#endif
+#define SV_EXP2F_POLY_ORDER 6
+extern const float __sv_exp2f_poly[SV_EXP2F_POLY_ORDER - 1] HIDDEN;
 
 #define EXPM1F_POLY_ORDER 5
 extern const float __expm1f_poly[EXPM1F_POLY_ORDER] HIDDEN;
@@ -569,4 +610,14 @@ extern const struct v_tan_data
   double neg_half_pi_hi, neg_half_pi_lo;
   double poly[9];
 } __v_tan_data HIDDEN;
+
+#define SV_EXP_POLY_ORDER 5
+extern const double __sv_exp_poly[SV_EXP_POLY_ORDER - 1] HIDDEN;
+
+#define ASINF_POLY_ORDER 4
+extern const float __asinf_poly[ASINF_POLY_ORDER + 1] HIDDEN;
+
+#define ASIN_POLY_ORDER 11
+extern const double __asin_poly[ASIN_POLY_ORDER + 1] HIDDEN;
+
 #endif
